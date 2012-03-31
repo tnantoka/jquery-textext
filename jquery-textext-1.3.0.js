@@ -1521,6 +1521,16 @@
 		{
 			var self = $(this);
 
+      // Quick-fix for Japanese IME
+      var lastValue;
+      (function checkJapanese() {
+        if (lastValue != self.val()) {
+          self.keyup();
+        }
+        lastValue = self.val();
+        setTimeout(checkJapanese, 500);
+      })();
+
 			if(opts == null)
 				return self.data('textext');
 
@@ -2538,7 +2548,7 @@
 			;
 
     // Quick-fix for Japanese IME
-    if (/[^a-zA-Z0-9\s]/.test(this.val())) {
+    if (keyCode == 13 && /[^a-zA-Z0-9\s]/.test(this.val())) {
       this.trigger('enterKeyPress');
     }    
 
